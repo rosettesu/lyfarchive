@@ -1,0 +1,45 @@
+<% provide(:title, 'Registrations') %>
+<h1>Registrations</h1>
+
+<div class="table-responsive">
+  <table class="table table-condensed table-hover">
+    <tr>
+      <th>Registered</th>
+      <th>Year</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Gender</th>
+      <th>Grade</th>
+      <th>Group</th>
+      <th>Family</th>
+      <th>Cabin</th>
+      <th>Bus</th>
+      <th>Parent Name</th>
+      <th>Parent Email</th>
+      <th>Phone Number</th>
+      <th>Address</th>
+    </tr>
+    <% @registrations.each do |reg| %>
+      <tr>
+        <td><%= reg.created_at.in_time_zone("Pacific Time (US & Canada)") %></td>
+        <td><%= reg.camp.year %></td>
+        <td><%= reg.camper.first_name %></td>
+        <td><%= reg.camper.last_name %></td>
+        <td><%= reg.camper.gender %></td>
+        <td><%= reg.grade_completed %></td>
+        <td><%= reg.group %></td>
+        <td><%= reg.family %></td>
+        <td><%= reg.cabin %></td>
+        <td><% if reg.bus? %>&#10004;<% end %></td>
+        <td><%= link_to reg.camper.parent.full_name, parent_path(reg.camper.parent) %></td>
+        <td><%= reg.camper.parent.email %></td>
+        <td><%= reg.camper.parent.phone_number %></td>
+        <td><%= reg.camper.parent.address %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<div class="center">
+  <%= will_paginate %>
+</div>

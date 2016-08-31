@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  grade_completed: 1
+  shirt_size: 1
+  bus: false
+  additional_notes: MyText
+  waiver_signature: MyString
+  waiver_date: 2016-08-29 17:21:25
+  group: 1
+  family: MyString
+  cabin: MyString
+  camp: one
+  camper: one
+
+two:
+  grade_completed: 1
+  shirt_size: 1
+  bus: false
+  additional_notes: MyText
+  waiver_signature: MyString
+  waiver_date: 2016-08-29 17:21:25
+  group: 1
+  family: MyString
+  cabin: MyString
+  camp: two
+  camper: two

@@ -1,0 +1,9 @@
+jonathan:
+  first_name: Jonathan
+  last_name: Chen
+  gender: M
+  birthdate: <%= 15.years.ago %>
+  medical: N/A
+  diet_allergies: N/A
+  active: true
+  parent: jessica

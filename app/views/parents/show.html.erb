@@ -1,0 +1,52 @@
+<% provide(:title, 'Parent: ' + @parent.full_name) %>
+
+
+<h1><%= @parent.full_name %> <small>Parent</small></h1>
+<div class="row">
+  <div class="col-md-4">
+    <strong>Email</strong><br>
+    <a href="mailto:#"><%= @parent.email %></a>
+  </div>
+  <div class="col-md-4">
+    <strong>Phone</strong><br>
+    <%= @parent.phone_number %>
+  </div>
+  <div class="col-md-4">
+    <address>
+      <strong>Address</strong><br>
+      <%= @parent.address %>
+    </address>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <strong>Referral Method</strong><br>
+    <%= @parent.referral_method %>
+  </div>
+  <div class="col-md-6">
+    <strong>Referred By</strong><br>
+    <%= @parent.referred_by %>
+  </div>
+</div>
+
+<h2>Campers</h2>
+<div class="table-responsive">
+  <table class="table table-condensed table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Birthdate</th>
+      <th>Active</th>
+      <th>Years Attended</th>
+    </tr>
+    <% @campers.each do |camper| %>
+      <tr>
+        <td><%= link_to camper.full_name, camper_path(camper) %></td>
+        <td><%= camper.gender %></td>
+        <td><%= camper.birthdate %></td>
+        <td><% if camper.active? %>&#10004;<% end %></td>
+        <td><%= camper.registrations.count %>
+      </tr>
+    <% end %>
+  </table>
+</div>
