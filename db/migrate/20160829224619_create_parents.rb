@@ -5,9 +5,12 @@ class CreateParents < ActiveRecord::Migration[5.0]
       t.string :last_name
       t.string :email
       t.string :phone_number
-      t.string :address
-      t.string :referral_method
-      t.string :referred_by
+      t.string :street
+      t.string :city
+      t.string :state
+      t.string :zip
+      t.integer :referral_method
+      t.string :referral_details
 
       t.timestamps
     end

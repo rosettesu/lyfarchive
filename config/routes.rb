@@ -1,11 +1,6 @@
 Rails.application.routes.draw do
-  get 'parents/show'
-
-  get 'registration/index'
-
-  resources :campers, only: [:index, :show]
+  resources :registration_form, only: [:show, :update]
   resources :parents, only: [:show]
+  resources :campers, only: [:index, :show]
   resources :registrations, only: [:index]
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

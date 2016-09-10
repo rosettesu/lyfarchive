@@ -20,20 +20,18 @@ ActiveRecord::Schema.define(version: 20160830002124) do
     t.string   "email"
     t.text     "medical"
     t.text     "diet_allergies"
-    t.boolean  "active"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "status",         default: 0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "parent_id"
     t.index ["first_name", "last_name", "birthdate"], name: "index_campers_on_first_name_and_last_name_and_birthdate", unique: true
     t.index ["parent_id"], name: "index_campers_on_parent_id"
   end
 
-  create_table "camps", force: :cascade do |t|
-    t.integer  "year"
+  create_table "camps", primary_key: "year", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["year"], name: "index_camps_on_year"
   end
 
   create_table "parents", force: :cascade do |t|
@@ -41,15 +39,18 @@ ActiveRecord::Schema.define(version: 20160830002124) do
     t.string   "last_name"
     t.string   "email"
     t.string   "phone_number"
-    t.string   "address"
-    t.string   "referral_method"
-    t.string   "referred_by"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "street"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.integer  "referral_method"
+    t.string   "referral_details"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.integer  "grade_completed"
+    t.integer  "grade"
     t.integer  "shirt_size"
     t.boolean  "bus"
     t.text     "additional_notes"

@@ -4,22 +4,20 @@
 <h1><%= @camper.full_name %> <small>Camper</small></h1>
 <div class="row">
   <div class="col-md-2">
-    <strong>Active?</strong><br>
-    <% if @camper.active? %>&#10004;<% end %>
+    <strong>Status</strong><br>
+    <%= @camper.get_status %>
   </div>
   <div class="col-md-2">
     <strong>Gender</strong><br>
-    <%= @camper.gender %>
+    <%= @camper.get_gender %>
   </div>
   <div class="col-md-2">
     <strong>Birthdate</strong><br>
     <%= @camper.birthdate %>
   </div>
   <div class="col-md-3">
-    <address>
-      <strong>Email</strong><br>
-      <a href="mailto:#"><%= @camper.email %></a>
-    </address>
+    <strong>Email</strong><br>
+    <a href="mailto:#"><%= @camper.email %></a>
   </div>
   <div class="col-md-3">
     <strong>Parent</strong><br>
@@ -50,7 +48,7 @@
     <% @regs.each do |reg| %>
       <tr>
         <td><%= reg.camp.year %></td>
-        <td><%= reg.grade_completed %></td>
+        <td><%= reg.grade %></td>
         <td><%= reg.group %></td>
         <td><%= reg.family %></td>
         <td><%= reg.cabin %></td>

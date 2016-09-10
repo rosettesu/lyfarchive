@@ -17,7 +17,8 @@
       <th>Parent Name</th>
       <th>Parent Email</th>
       <th>Phone Number</th>
-      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
     </tr>
     <% @registrations.each do |reg| %>
       <tr>
@@ -25,8 +26,8 @@
         <td><%= reg.camp.year %></td>
         <td><%= reg.camper.first_name %></td>
         <td><%= reg.camper.last_name %></td>
-        <td><%= reg.camper.gender %></td>
-        <td><%= reg.grade_completed %></td>
+        <td><%= reg.camper.get_gender %></td>
+        <td><%= reg.grade %></td>
         <td><%= reg.group %></td>
         <td><%= reg.family %></td>
         <td><%= reg.cabin %></td>
@@ -34,7 +35,8 @@
         <td><%= link_to reg.camper.parent.full_name, parent_path(reg.camper.parent) %></td>
         <td><%= reg.camper.parent.email %></td>
         <td><%= reg.camper.parent.phone_number %></td>
-        <td><%= reg.camper.parent.address %></td>
+        <td><%= reg.camper.parent.city %></td>
+        <td><%= reg.camper.parent.state %></td>
       </tr>
     <% end %>
   </table>

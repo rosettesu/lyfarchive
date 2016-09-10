@@ -5,7 +5,7 @@
   <table class="table table-condensed table-hover">
     <tr>
       <th></th>
-      <th>Active?</th>
+      <th>Status</th>
       <th>First Name</th>
       <th>Last Name</th>
       <th>Gender</th>
@@ -14,21 +14,23 @@
       <th>Parent Name</th>
       <th>Parent Email</th>
       <th>Phone Number</th>
-      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
     </tr>
     <% @campers.each do |camper| %>
       <tr>
         <td><%= link_to 'View', camper_path(camper) %></td>
-        <td><% if camper.active? %>&#10004;<% end %></td>
+        <td><%= camper.get_status %>
         <td><%= camper.first_name %></td>
         <td><%= camper.last_name %></td>
-        <td><%= camper.gender %></td>
+        <td><%= camper.get_gender %></td>
         <td><%= camper.birthdate %></td>
         <td><%= camper.email %></td>
         <td><%= link_to camper.parent.full_name, parent_path(camper.parent) %></td>
         <td><%= camper.parent.email %></td>
         <td><%= camper.parent.phone_number %></td>
-        <td><%= camper.parent.address %></td>
+        <td><%= camper.parent.city %></td>
+        <td><%= camper.parent.state %></td>
       </tr>
     <% end %>
   </table>

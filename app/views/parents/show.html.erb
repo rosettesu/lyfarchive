@@ -12,10 +12,9 @@
     <%= @parent.phone_number %>
   </div>
   <div class="col-md-4">
-    <address>
-      <strong>Address</strong><br>
-      <%= @parent.address %>
-    </address>
+    <strong>Address</strong><br>
+    <%= @parent.street %><br>
+    <%= "#{@parent.city}, #{@parent.state} #{@parent.zip}" %>
   </div>
 </div>
 <div class="row">
@@ -24,8 +23,8 @@
     <%= @parent.referral_method %>
   </div>
   <div class="col-md-6">
-    <strong>Referred By</strong><br>
-    <%= @parent.referred_by %>
+    <strong>Referral Details</strong><br>
+    <%= @parent.referral_details %>
   </div>
 </div>
 
@@ -36,16 +35,16 @@
       <th>Name</th>
       <th>Gender</th>
       <th>Birthdate</th>
-      <th>Active</th>
       <th>Years Attended</th>
+      <th>Status</th>
     </tr>
     <% @campers.each do |camper| %>
       <tr>
         <td><%= link_to camper.full_name, camper_path(camper) %></td>
-        <td><%= camper.gender %></td>
+        <td><%= camper.get_gender %></td>
         <td><%= camper.birthdate %></td>
-        <td><% if camper.active? %>&#10004;<% end %></td>
         <td><%= camper.registrations.count %>
+        <td><%= camper.get_status %></td>
       </tr>
     <% end %>
   </table>

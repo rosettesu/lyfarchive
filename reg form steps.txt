@@ -1,0 +1,25 @@
+:step
+  record: field, validating_field*
+
+:begin
+:returning
+:parent
+  parent: first_name*, last_name*, email*, phone*, street*, city*, state*, zip*
+:referral
+  parent: referral_method*, referred_by
+:camper
+  camper: first_name*, last_name*, gender*, birthdate*, email
+  reg: grade*
+:medical
+  camper: medical*, diet_allergies*
+:shirt
+  reg: shirt_size*
+:bus
+  reg: bus*
+:notes
+  reg: additional_notes
+:waiver
+  reg: waiver_signature*, waiver_date*
+:review
+:payment
+:submit

@@ -1,17 +1,35 @@
 class Camper < ApplicationRecord
+  include RegFormHelper
   belongs_to :parent, inverse_of: :campers
   has_many :registrations, inverse_of: :camper
-  validates :parent, presence: true
+  accepts_nested_attributes_for :registrations
   before_save { self.email = email.downcase if !email.nil? }
-  validates :first_name, :last_name, :gender, :birthdate, presence: true
+  validates :parent, presence: true
+  with_options :if => Proc.new { |c| c.required_for_step?(:camper) } do
+    validates :first_name, :last_name, presence: true, length: { maximum: 50 }
+    validates :gender, :birthdate, presence: true
+    validates :birthdate, uniqueness: { scope: [:first_name, :last_name] }
+    validates :email, length: { maximum: 255 }, format: VALID_EMAIL_REGEX,
+              allow_blank: true
+  end
   validates :medical, :diet_allergies,
-            presence: { message: "Required. If none, please write \"N/A\"" }
-  validates :email, length: { maximum: 255 }, format: VALID_EMAIL_REGEX,
-            allow_blank: true
-  validates :birthdate, uniqueness: { scope: [:first_name, :last_name] }
-  enum gender: [:M, :F]
+            presence: { message: "Required. If none, please write \"N/A\"" },
+            :if => Proc.new { |c| c.required_for_step?(:medical) }
+  enum gender: { male: 0, female: 1 }
+  enum status: { active: 0, graduated: 1 }
+
+  cattr_accessor :reg_steps do %w[camper medical] end
+  attr_accessor :reg_step
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def get_status
+    status.titlecase
+  end
+
+  def get_gender
+    gender[0].upcase
   end
 end

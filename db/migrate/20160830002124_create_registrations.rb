@@ -1,7 +1,7 @@
 class CreateRegistrations < ActiveRecord::Migration[5.0]
   def change
     create_table :registrations do |t|
-      t.integer :grade_completed
+      t.integer :grade
       t.integer :shirt_size
       t.boolean :bus
       t.text :additional_notes

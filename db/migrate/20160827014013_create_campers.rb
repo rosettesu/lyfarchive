@@ -8,7 +8,7 @@ class CreateCampers < ActiveRecord::Migration[5.0]
       t.string :email
       t.text :medical
       t.text :diet_allergies
-      t.boolean :active
+      t.integer :status, default: 0
 
       t.timestamps
     end
