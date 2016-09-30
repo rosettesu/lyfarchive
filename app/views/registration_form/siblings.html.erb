@@ -1,0 +1,45 @@
+<% provide(:title, 'LYF Camp Registration 2017') %>
+<div class="row">
+  <div class="col-md-3">
+    <h3>LYF Camp 2017 Registration</h3>
+    <%= render 'outline' %>
+  </div>
+  <div class="col-md-9">
+    <h1>Register a Sibling</h1>
+    <p>Would you like to register a sibling? If registered at the same time, a discount of $40 per sibling is applied.<br>
+    Please note that siblings MUST have the same parent contact information.</p>
+    <p>Current Registrations:</p>
+    <ul>
+      <% @regs.each do |r| %>
+        <li>
+          <b><%= r %></b>
+        </li>
+      <% end %>
+    </ul>
+    <p>What would you like to do?</p>
+    <%= form_for :wizard, url: wizard_path, method: :put do |f| %>
+      <% @siblings.each do |s| %>
+        <div class="radio">
+          <%= f.label "sibling_#{s.id}" do %>
+            <%= f.radio_button :sibling, s.id %> I would like to register <b><%= s.full_name %></b> as a returning camper and sibling
+          <% end %>
+        </div>
+      <% end %>
+      <div class="radio">
+        <%= f.label :sibling_new do %>
+          <%= f.radio_button :sibling, "new" %> I would like to register a new sibling
+        <% end %>
+      </div>
+      <div class="radio">
+        <%= f.label :sibling_none do %>
+          <%= f.radio_button :sibling, "none" %> I do not want to register any more campers
+        <% end %>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+          <%= f.submit "Continue", class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

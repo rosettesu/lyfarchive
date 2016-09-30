@@ -9,8 +9,6 @@ class CreateParents < ActiveRecord::Migration[5.0]
       t.string :city
       t.string :state
       t.string :zip
-      t.integer :referral_method
-      t.string :referral_details
 
       t.timestamps
     end

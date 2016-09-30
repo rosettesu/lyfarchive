@@ -3,28 +3,26 @@
 
 <h1><%= @parent.full_name %> <small>Parent</small></h1>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3">
     <strong>Email</strong><br>
     <a href="mailto:#"><%= @parent.email %></a>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-2">
     <strong>Phone</strong><br>
     <%= @parent.phone_number %>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <strong>Address</strong><br>
     <%= @parent.street %><br>
     <%= "#{@parent.city}, #{@parent.state} #{@parent.zip}" %>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <strong>Referral Method</strong><br>
-    <%= @parent.referral_method %>
-  </div>
-  <div class="col-md-6">
-    <strong>Referral Details</strong><br>
-    <%= @parent.referral_details %>
+  <div class="col-md-4">
+    <strong>Referral Method(s)</strong><br>
+    <ul>
+    <% @parent.referrals.each do |referral| %>
+      <li><%= referral.referral_method.name + (referral.details ? " (#{referral.details})" : "") %></li>
+    <% end %>
+    </ul>
   </div>
 </div>
 

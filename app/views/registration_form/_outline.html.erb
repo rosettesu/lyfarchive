@@ -1,0 +1,6 @@
+<ol>
+  <% @steps.each do |step| %>
+  <li<%= ' class=text-primary' if @current_step == step%>><%= step.titlecase%></li>
+  <% end %>
+</ol>
+<%= link_to "Cancel Registration", wizard_path(:begin), data: { confirm: "Are you sure you want to cancel this registration? Any changes you have made on any part of this form will not be saved." }, class: "btn btn-default btn-block" %>

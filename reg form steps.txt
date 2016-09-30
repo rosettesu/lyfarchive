@@ -8,18 +8,13 @@
 :referral
   parent: referral_method*, referred_by
 :camper
-  camper: first_name*, last_name*, gender*, birthdate*, email
-  reg: grade*
-:medical
-  camper: medical*, diet_allergies*
-:shirt
-  reg: shirt_size*
-:bus
-  reg: bus*
-:notes
-  reg: additional_notes
+  camper: first_name*, last_name*, gender*, birthdate*, email, medical*, diet_allergies*
+:details
+  reg: grade*, shirt_size*, bus*
 :waiver
-  reg: waiver_signature*, waiver_date*
+  reg: additional_notes, waiver_signature*, waiver_date*
 :review
 :payment
 :submit
+
+[begin returning parent referral camper details waiver review siblings payment submit]

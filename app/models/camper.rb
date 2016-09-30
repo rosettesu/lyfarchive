@@ -1,7 +1,7 @@
 class Camper < ApplicationRecord
   include RegFormHelper
   belongs_to :parent, inverse_of: :campers
-  has_many :registrations, inverse_of: :camper
+  has_many :registrations, inverse_of: :camper, dependent: :destroy
   accepts_nested_attributes_for :registrations
   before_save { self.email = email.downcase if !email.nil? }
   validates :parent, presence: true
@@ -13,12 +13,12 @@ class Camper < ApplicationRecord
               allow_blank: true
   end
   validates :medical, :diet_allergies,
-            presence: { message: "Required. If none, please write \"N/A\"" },
-            :if => Proc.new { |c| c.required_for_step?(:medical) }
+            presence: { message: "required. If none, please write \"N/A\"" },
+            :if => Proc.new { |c| c.required_for_step?(:camper) }
   enum gender: { male: 0, female: 1 }
   enum status: { active: 0, graduated: 1 }
 
-  cattr_accessor :reg_steps do %w[camper medical] end
+  cattr_accessor :reg_steps do %w[camper] end
   attr_accessor :reg_step
 
   def full_name

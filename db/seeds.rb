@@ -1,15 +1,25 @@
+# make some referral methods
+detailed = ["TACL-LYF Counselors", "TACL-LYF Campers and Families",
+  "Other Taiwanese Organizations", "Other"]
+["TACL-LYF Counselors", "TACL-LYF Campers and Families", "JTASA", "TAP",
+  "Other Taiwanese Organizations", "Chinese School", "Newspaper", "Flyers",
+  "Other"].each do |method|
+  ReferralMethod.create!(name: method, allow_details: detailed.include?(method))
+end
+referral_methods = ReferralMethod.all
+
 # make some camps
 camp = Camp.create!(year: 2016, name: "When LYF Gives You Lemons")
 prev_camp = Camp.create!(year: 2015, name: "Circle of LYF")
+
+# make next year's camp just bc
+Camp.create!(year: 2017, name: "To Be Determined")
 
 # make some parents
 60.times do |n|
   parent_first_name = Faker::Name.first_name
   parent_last_name = Faker::Name.last_name
   parent_email = Faker::Internet.safe_email(parent_first_name)
-  referral_method = %w[counselors campers jtasa tap other_org chinese_school
-                       newspaper flyers other].sample
-  referral_details = [Faker::Name.name, ""].sample
   Parent.create!(first_name: parent_first_name,
                  last_name: parent_last_name,
                  email: parent_email,
@@ -17,14 +27,17 @@ prev_camp = Camp.create!(year: 2015, name: "Circle of LYF")
                  street: Faker::Address.street_address,
                  city: Faker::Address.city,
                  state: Faker::Address.state_abbr,
-                 zip: Faker::Address.zip,
-                 referral_method: referral_method,
-                 referral_details: referral_details)
+                 zip: Faker::Address.zip)
 end
 
 # give each parent some campers and register them for this year
 parents = Parent.all
 parents.each do |parent|
+  times = rand(1..2)
+  referral_methods.sample(times).each do |method|
+    parent.referrals.create!(referral_method_id: method.id,
+                             details: method.allow_details ? Faker::Name.name : nil)
+  end
   rand(1..3).times do
     first_name = Faker::Name.first_name
     last_name = parent.last_name
