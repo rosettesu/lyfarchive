@@ -21,6 +21,8 @@ class RegistrationFormController < ApplicationController
     when "referral"
       if session[:parent_id].nil?
         @parent = build_parent_from_session
+        @rm_ids = @parent.referrals.collect{|r| r.referral_method_id}
+        @referrals = initialize_referrals(@parent)
         @parent.valid? if form_has_errors?
       else
         skip_step
@@ -97,7 +99,17 @@ class RegistrationFormController < ApplicationController
         redirect_to wizard_path
       end
     when "referral"
-      redirect_to next_wizard_path
+      # refs = parent_params(step).to_h["referrals_attributes"].values
+      # refs.reject!{ |r| r["_destroy"] == "1" }
+      # session[:referrals] = refs
+      session[:parent] = session[:parent].merge(parent_params(step).to_h)
+      @parent = build_parent_from_session
+      if @parent.valid?
+        redirect_to next_wizard_path
+      else
+        session[:form_has_errors] = true
+        redirect_to wizard_path
+      end
     when "camper"
       session[:camper] = {} if session[:camper].nil?
       session[:camper] = session[:camper].merge(camper_params(step).to_h)
@@ -148,28 +160,25 @@ class RegistrationFormController < ApplicationController
         end
       end
     when "payment"
-      # TODO: refactor to use nested attribute hash when saving parent?
       parent_id = session[:parent_id]
       @parent = parent_id ? Parent.find(parent_id) : Parent.new
       @parent.assign_attributes(session[:parent])
-      campers = session[:campers]
-      campers.each_with_index do |camper, i|
-        reg_fields = session[:regs][i].merge(camp: Camp.first)
-        if camper["id"].nil?
-          c = @parent.campers.build(camper)
+      @parent.transaction do
+        campers = session[:campers]
+        campers.each_with_index do |camper, i|
+          reg_fields = session[:regs][i].merge(camp: Camp.first)
+          c = camper["id"].nil? ? @parent.campers.build() : @parent.campers.find(camper["id"])
+          c.assign_attributes(camper)
           c.registrations.build(reg_fields)
-        else
-          @parent.campers.find(camper["id"]).assign_attributes(camper)
-          @parent.campers.find(camper["id"]).registrations.build(reg_fields)
-          debugger
+          c.save!
         end
-      end
-      if @parent.save
-        clear_session
-        redirect_to wizard_path(:submit)
-      else
-        flash[:danger] = "Something went wrong."
-        redirect_to wizard_path
+        if @parent.save!
+          clear_session
+          redirect_to wizard_path(:submit)
+        else
+          flash[:danger] = "Something went wrong."
+          redirect_to wizard_path
+        end
       end
     end
   end
@@ -181,11 +190,11 @@ class RegistrationFormController < ApplicationController
           [:first_name, :last_name, :email, :phone_number, :street, :city,
            :state, :zip]
         when "referral"
-          [referrals_attributes: [:id, :parent_id, :referral_method_id,
-           :details]]
+          [referrals_attributes: [:referral_method_id, :details, :_destroy]]
         end
       params.require(:parent).permit(permitted_attrs).merge(reg_step: step)
     end
+
 
     def camper_params(step)
       permitted_attrs = case step
@@ -203,8 +212,7 @@ class RegistrationFormController < ApplicationController
         when "waiver"
           [:additional_notes, :waiver_signature, :waiver_date]
         end
-      params.require(:registration).permit(permitted_attrs).
-                                    merge(reg_step: step)
+      params.require(:registration).permit(permitted_attrs).merge(reg_step: step)
     end
 
     def form_has_errors?
@@ -218,6 +226,16 @@ class RegistrationFormController < ApplicationController
     def build_parent_from_session
       parent = Parent.new(session[:parent])
       return parent
+    end
+
+    def initialize_referrals(parent)
+      rm_ids = parent.referrals.collect{|r| r.referral_method_id}
+      ReferralMethod.all.each do |rm|
+        unless rm_ids.include?(rm.id)
+          parent.referrals.build(referral_method_id: rm.id)
+        end
+      end
+      return parent.referrals.sort_by &:referral_method_id
     end
 
     def build_camper_from_session
@@ -276,6 +294,7 @@ class RegistrationFormController < ApplicationController
 
     def clear_session
       clear_parent
+      session[:referrals] = nil
       clear_all_campers
       clear_all_registrations
     end

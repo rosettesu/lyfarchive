@@ -8,11 +8,22 @@
     <h1>How did you hear about us?</h1>
     <%= form_for @parent, url: wizard_path, method: :put do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-      <div class="row">
-        <div class="col-md-12">
-          <p>Please check all that apply.</p>
+      <p>Please check all that apply.</p>
+      <%= f.fields_for :referrals, @referrals, include_id: false do |rf| %>
+        <div class="checkbox">
+          <%= rf.label :_destroy do %>
+            <%= rf.check_box :_destroy, {:checked => @rm_ids.include?(rf.object.referral_method_id)}, '0', '1' %>
+            <%= rf.hidden_field :referral_method_id %>
+            <%= rf.object.referral_method.name %>
+          <% end %>
+          <% if rf.object.referral_method.allow_details %>
+            <div class="form-group">
+              <%= rf.label :details, 'Please specify: ' %>
+              <%= rf.text_field :details, class: "auto-width form-control" %>
+            </div>
+          <% end %>
         </div>
-      </div>
+      <% end %>
       <div class="row">
         <div class="col-md-2">
           <%= link_to "Back", previous_wizard_path, class: "btn btn-default btn-block" %>
