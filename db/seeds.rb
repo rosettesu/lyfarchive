@@ -53,7 +53,7 @@ parents.each do |parent|
                                     diet_allergies: "N/A",
                                     status: birthdate < 17.years.ago ?
                                             "graduated" : "active")
-    grade = Time.now.year - camper.birthdate.year - 5
+    grade = [[Time.now.year - camper.birthdate.year - 5, 3].max, 12].min
     shirt_size = %w[x_small small medium large x_large xx_large].sample
     group = ('A'..'N').to_a.sample
     family = %w[Guava Dragonfruit Starfruit Kumquat Papaya Waxapple Passionfruit

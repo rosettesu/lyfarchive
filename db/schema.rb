@@ -28,10 +28,12 @@ ActiveRecord::Schema.define(version: 20160913224822) do
     t.index ["parent_id"], name: "index_campers_on_parent_id"
   end
 
-  create_table "camps", primary_key: "year", force: :cascade do |t|
+  create_table "camps", force: :cascade do |t|
+    t.integer  "year"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["year"], name: "index_camps_on_year", unique: true
   end
 
   create_table "parents", force: :cascade do |t|

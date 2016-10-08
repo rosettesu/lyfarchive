@@ -3,7 +3,7 @@ class Registration < ApplicationRecord
   belongs_to :camp, inverse_of: :registrations
   belongs_to :camper, inverse_of: :registrations
   validates :camp, :camper, presence: true
-  validates :grade, :inclusion => { :in => 3..12 },
+  validates :grade, :inclusion => 3..12,
             :if => Proc.new { |r| r.required_for_step?(:details) }
   validates :shirt_size, presence: true,
             :if => Proc.new { |r| r.required_for_step?(:details) }
